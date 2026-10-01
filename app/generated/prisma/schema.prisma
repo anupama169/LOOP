@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model workspace {
+  id        Int                 @id @default(autoincrement())
+  name      String
+  createdAt DateTime            @default(now())
+  feedback  workspacefeedback[]
+  report    workspacereport[]
+  theme     workspacetheme[]
+  user      workspaceuser[]
+}
+
+enum Role {
+  admin
+  analyst
+  viewer
+}
+
+model user {
+  id           Int             @id @default(autoincrement())
+  name         String
+  email        String          @unique
+  passwordHash String
+  role         Role
+  user         report[]
+  workspace    workspaceuser[]
+}
+
+model workspaceuser {
+  workspaceid Int
+  userid      Int
+  user        user      @relation(fields: [userid], references: [id])
+  workspace   workspace @relation(fields: [workspaceid], references: [id])
+
+  @@id([workspaceid, userid])
+}
+
+enum Sentiment {
+  positive
+  neutral
+  negative
+}
+
+enum Status {
+  new
+  reviewed
+  actioned
+}
+
+model feedback {
+  id        Int                 @id @default(autoincrement())
+  content   String
+  channel   String
+  sentiment Sentiment
+  status    Status
+  feedback  embedding[]
+  theme     feedbacktheme[]
+  workspace workspacefeedback[]
+}
+
+model workspacefeedback {
+  workspaceid Int
+  feedbackid  Int
+  feedback    feedback  @relation(fields: [feedbackid], references: [id])
+  workspace   workspace @relation(fields: [workspaceid], references: [id])
+
+  @@id([workspaceid, feedbackid])
+}
+
+model theme {
+  id          Int              @id @default(autoincrement())
+  name        String
+  description String
+  color       String
+  feedback    feedbacktheme[]
+  workspace   workspacetheme[]
+}
+
+model workspacetheme {
+  workspaceid Int
+  themeid     Int
+  theme       theme     @relation(fields: [themeid], references: [id])
+  workspace   workspace @relation(fields: [workspaceid], references: [id])
+
+  @@id([workspaceid, themeid])
+}
+
+model feedbacktheme {
+  feedbackid Int
+  themeid    Int
+  feedback   feedback @relation(fields: [feedbackid], references: [id])
+  theme      theme    @relation(fields: [themeid], references: [id])
+
+  @@id([feedbackid, themeid])
+}
+
+model embedding {
+  id         Int      @id @default(autoincrement())
+  vector     String
+  feedbackid Int
+  feedback   feedback @relation(fields: [feedbackid], references: [id])
+}
+
+model report {
+  id          Int               @id @default(autoincrement())
+  title       String
+  periodstart DateTime          @default(now())
+  periodend   DateTime
+  contentJson String
+  userid      Int
+  user        user              @relation(fields: [userid], references: [id])
+  workspace   workspacereport[]
+}
+
+model workspacereport {
+  workspaceid Int
+  reportid    Int
+  report      report    @relation(fields: [reportid], references: [id])
+  workspace   workspace @relation(fields: [workspaceid], references: [id])
+
+  @@id([workspaceid, reportid])
+}
