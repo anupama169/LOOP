@@ -58,11 +58,7 @@ export async function POST(request: Request) {
             );
         }
 
-        const model = genAI.getGenerativeModel({
-            model: "gemini-3.8-flash",
-        });
-
-        const prompt = `
+       const prompt = `
 Analyze this customer feedback.
 
 Feedback:
@@ -76,26 +72,32 @@ Theme: a short name for the main topic
 Do not add anything else.
 `;
 
-        let aiSentiment = sentiment;
-        let aiTheme = "";
+let aiSentiment = sentiment;
+let aiTheme = "";
 
-        try {
-            console.log("Before AI");
+try {
+    console.log("Before AI");
 
-            const result = await model.generateContent(prompt);
-            const aiText = result.response.text();
+    const response = await ai.models.generateContent({
+        model: "gemini-3.8-flash",
+        contents: prompt,
+    });
 
-            aiSentiment =
-                aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1]?.toLowerCase() ||
-                sentiment;
+    const aiText = response.text ?? "";
 
-            aiTheme =
-                aiText.match(/Theme:\s*(.+)/i)?.[1]?.trim() || "";
-        } catch (error) {
-            console.error("Gemini AI failed:", error);
-            throw error;
-        }
+    aiSentiment =
+        aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1]?.toLowerCase() ||
+        sentiment;
 
+    aiTheme =
+        aiText.match(/Theme:\s*(.+)/i)?.[1]?.trim() || "";
+} catch (error) {
+    console.error("Gemini AI failed:", error);
+
+    // Continue saving the feedback even if AI fails
+    aiSentiment = sentiment;
+    aiTheme = "";
+}
         console.log({
             content,
             channel,
@@ -114,7 +116,7 @@ Do not add anything else.
 
         console.log("Feedback created:", feedback.id);
 
-        try {
+       /* try {
             const embeddingResponse = await embeddingAI.models.embedContent({
                 model: "gemini-embedding-001",
                 contents: content,
@@ -132,7 +134,7 @@ Do not add anything else.
             }
         } catch (error) {
             console.error("Embedding generation failed:", error);
-        }
+        }*/
 
         await prisma.workspacefeedback.create({
             data: {
