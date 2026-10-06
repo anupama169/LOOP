@@ -31,7 +31,6 @@ export default function EditFeedback({
                 id,
                 content,
                 channel,
-                
                 status,
             }),
         });
@@ -89,6 +88,6 @@ export default function EditFeedback({
             </div>
         )}
     </div>
-);
-}
+)};
+
 

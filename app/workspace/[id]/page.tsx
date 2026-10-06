@@ -10,7 +10,7 @@ export default async function WorkspacePage({
     params,
 }: {
     params: Promise<{ id: string }>;
-}) 
+}) {
     const { id } = await params;
     const cookieStore = await cookies();
 const userId = cookieStore.get("userId")?.value;
@@ -101,7 +101,7 @@ if (!workspaceUser) {
                             </p>
                         </div>
 
-                        <div className="flex items-center gap-3">
+        </div>
 
     <div className="flex items-center gap-3">
 

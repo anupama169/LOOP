@@ -8,7 +8,7 @@ datasource db {
 }
 
 model workspace {
-  id        Int @id @default(autoincrement())
+  id        Int                 @id @default(autoincrement())
   name      String
   createdAt DateTime            @default(now())
   feedback  workspacefeedback[]
@@ -16,20 +16,15 @@ model workspace {
   theme     workspacetheme[]
   user      workspaceuser[]
 }
-enum Role{
-  admin
-  analyst
-  viewer
-}
 
 model user {
-  id        Int @id @default(autoincrement())
-  name      String
-  email     String @unique
-  passwordHash String 
-  role      Role
-  user      report[]
-  workspace workspaceuser[]
+  id           Int             @id @default(autoincrement())
+  name         String
+  email        String          @unique
+  passwordHash String
+  role         Role
+  user         report[]
+  workspace    workspaceuser[]
 }
 
 model workspaceuser {
@@ -39,16 +34,6 @@ model workspaceuser {
   workspace   workspace @relation(fields: [workspaceid], references: [id])
 
   @@id([workspaceid, userid])
-}
-enum Sentiment{
-  positive
-  neutral
-  negative
-}
-enum Status{
-  new
-  reviewed
-  actioned
 }
 
 model feedback {
@@ -125,3 +110,20 @@ model workspacereport {
   @@id([workspaceid, reportid])
 }
 
+enum Role {
+  admin
+  analyst
+  viewer
+}
+
+enum Sentiment {
+  positive
+  neutral
+  negative
+}
+
+enum Status {
+  new
+  reviewed
+  actioned
+}

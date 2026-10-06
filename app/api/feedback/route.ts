@@ -88,8 +88,9 @@ try {
     aiTheme =
         aiText.match(/Theme:\s*(.+)/i)?.[1]?.trim() || "";
 
-} catch (error) {
-    console.error("Gemini AI failed, using selected sentiment:", error);
+}  catch (error) {
+    console.error("Gemini AI failed:", error);
+    throw error;
 }
 
         const feedback = await prisma.feedback.create({
@@ -170,7 +171,7 @@ try {
         });
     } catch (error) {
         console.error(error);
-
+        
         return NextResponse.json(
             { error: "Failed to create feedback" },
             { status: 500 }
