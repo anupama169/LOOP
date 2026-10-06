@@ -10,7 +10,7 @@ export default async function WorkspacePage({
     params,
 }: {
     params: Promise<{ id: string }>;
-}) {
+}) 
     const { id } = await params;
     const cookieStore = await cookies();
 const userId = cookieStore.get("userId")?.value;
