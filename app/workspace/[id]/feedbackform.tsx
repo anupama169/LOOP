@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import {SubmitEvent} from "react";
 
 export default function FeedbackForm({
     workspaceid,
@@ -13,7 +14,7 @@ export default function FeedbackForm({
     const [status, setStatus] = useState("new");
     const [feedbackId, setFeedbackId] = useState("");
 
-    async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>)  {
+    async function handleSubmit(e: SubmitEvent)  {
         e.preventDefault();
 
         const response = await fetch("/api/feedback", {
@@ -29,10 +30,11 @@ export default function FeedbackForm({
                 workspaceid,
             }),
         });
+        
 
         const data = await response.json();
-
-        if (response.ok) {
+        
+               if (response.ok) {
             alert("Feedback added successfully!");
             setContent("");
             setChannel("");
