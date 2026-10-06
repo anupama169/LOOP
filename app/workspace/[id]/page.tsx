@@ -119,19 +119,6 @@ if (!workspaceUser) {
 
 </div>
 
-    <form action="/api/logout" method="POST">
-        <button
-            type="submit"
-            className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-medium"
-        >
-            Logout
-        </button>
-    </form>
-
-</div>
-
-                    </div>
-
                 </div>
             </div>
 

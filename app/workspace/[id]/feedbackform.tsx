@@ -9,7 +9,7 @@ export default function FeedbackForm({
 }) {
     const [content, setContent] = useState("");
     const [channel, setChannel] = useState("");
-    const [sentiment, setSentiment] = useState("positive");
+    
     const [status, setStatus] = useState("new");
     const [feedbackId, setFeedbackId] = useState("");
 
@@ -24,7 +24,7 @@ export default function FeedbackForm({
             body: JSON.stringify({
                 content,
                 channel,
-                sentiment,
+            
                 status,
                 workspaceid,
             }),
@@ -67,15 +67,7 @@ export default function FeedbackForm({
                 required
             />
 
-            <select
-                value={sentiment}
-                onChange={(e) => setSentiment(e.target.value)}
-                className="w-full p-3 rounded bg-gray-700 mb-4"
-            >
-                <option value="positive">Positive</option>
-                <option value="neutral">Neutral</option>
-                <option value="negative">Negative</option>
-            </select>
+           
 
             <select
                 value={status}

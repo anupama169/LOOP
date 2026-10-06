@@ -2,7 +2,6 @@
 "use client";
 
 import { useState } from "react";
-
 export default function EditFeedback({
     id,
     oldContent,
@@ -32,7 +31,7 @@ export default function EditFeedback({
                 id,
                 content,
                 channel,
-                sentiment,
+                
                 status,
             }),
         });
@@ -69,10 +68,7 @@ export default function EditFeedback({
                     onChange={(e) => setChannel(e.target.value)}
                 />
 
-                <input
-                    value={sentiment}
-                    onChange={(e) => setSentiment(e.target.value)}
-                />
+               <p>AI Sentiment: {sentiment}</p>
 
                 <select
     value={status}
