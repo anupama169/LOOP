@@ -374,20 +374,7 @@ if (!workspaceUser) {
                                     </div>
 
                                     <div className="mt-5 pt-4 border-t border-gray-800 flex gap-3">
-    <EditFeedback
-        id={item.feedback.id}
-        oldContent={item.feedback.content}
-        oldChannel={item.feedback.channel}
-        oldSentiment={item.feedback.sentiment}
-        oldStatus={item.feedback.status}
-    />
-    <EditFeedback
-    id={item.feedback.id}
-    oldContent={item.feedback.content}
-    oldChannel={item.feedback.channel}
-    oldSentiment={item.feedback.sentiment}
-    oldStatus={item.feedback.status}
-/>
+    
 
 <EditFeedback
     id={item.feedback.id}
