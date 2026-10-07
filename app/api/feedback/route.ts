@@ -22,7 +22,7 @@ export async function POST(request: Request) {
             );
         }
 
-        const { content, channel, sentiment, status, workspaceid } = body;
+        const { content, channel,  status, workspaceid } = body;
 
         if (!content || !content.trim()) {
             return NextResponse.json(
@@ -72,7 +72,7 @@ Theme: a short name for the main topic
 Do not add anything else.
 `;
 
-let aiSentiment = sentiment;
+let aiSentiment :"positive" | "neutral" | "negative" = "neutral";
 let aiTheme = "";
 
 try {
@@ -92,13 +92,18 @@ console.log("Parsed Sentiment:");
 console.log(
     aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1]
 );
-    console.log("Gemini response:", response);
-
     
 
-    aiSentiment =
-        aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1]?.toLowerCase() ||
-        sentiment;
+    const detectedSentiment =
+    aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1];
+
+if (detectedSentiment) {
+    aiSentiment = detectedSentiment.toLowerCase() as
+        | "positive"
+        | "neutral"
+        | "negative";
+}
+
 
     aiTheme =
         aiText.match(/Theme:\s*(.+)/i)?.[1]?.trim() || "";
@@ -106,21 +111,23 @@ console.log(
     console.error("Gemini AI failed:", error);
 
     // Continue saving the feedback even if AI fails
-    aiSentiment = sentiment;
+    aiSentiment = "neutral";
     aiTheme = "";
 }
         console.log({
             content,
             channel,
-            sentiment: aiSentiment || sentiment,
+            sentiment: aiSentiment,
             status,
         });
+        console.log("Sentiment:", aiSentiment);
+        console.log("Theme:", aiTheme); 
 
         const feedback = await prisma.feedback.create({
             data: {
                 content,
                 channel,
-                sentiment: aiSentiment || sentiment,
+                sentiment: aiSentiment,
                 status,
             },
         });
