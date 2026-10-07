@@ -72,7 +72,7 @@ Theme: one or two words
 Do not include explanations or markdown.
 `;
 
-let aiSentiment ="";
+let aiSentiment :"positive"|"neutral"|"negative"="neutral";
 let aiTheme = "";
 
 try {
