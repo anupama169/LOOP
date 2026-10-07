@@ -89,7 +89,7 @@ Do not add information that is not present in the feedback.
             { status: 500 }
         );
     }*/
-   } catch (error) {
+    catch (error) {
     console.error("Summary API Error:", error);
 
     return NextResponse.json(
