@@ -72,14 +72,14 @@ Theme: one or two words
 Do not include explanations or markdown.
 `;
 
-let aiSentiment :"positive" | "neutral" | "negative" = "neutral";
+let aiSentiment ="";
 let aiTheme = "";
 
 try {
     console.log("Before AI");
 
     const response = await ai.models.generateContent({
-        model: "gemini-3.8-flash",
+        model: "gemini-2.5-flash",
         contents: prompt,
     });
     console.log("Raw Gemini response:");
