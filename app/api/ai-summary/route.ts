@@ -85,14 +85,21 @@ Do not add information that is not present in the feedback.
     catch (error) {
     console.error("Summary API Error:", error);
 
-    return NextResponse.json(
-        {
-            error:
-                error instanceof Error
-                    ? error.message
-                    : String(error),
-        },
-        { status: 500 }
-    );
-    }   
+           return NextResponse.json({
+            summary,
+        });
+
+    } catch (error) {
+        console.error("Summary API Error:", error);
+
+        return NextResponse.json(
+            {
+                error:
+                    error instanceof Error
+                        ? error.message
+                        : String(error),
+            },
+            { status: 500 }
+        );
+    }
 }
