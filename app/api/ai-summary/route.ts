@@ -82,14 +82,9 @@ Do not add information that is not present in the feedback.
         });
 
     }
-    catch (error) {
-    console.error("Summary API Error:", error);
+    
 
-           return NextResponse.json({
-            summary,
-        });
-
-    } catch (error) {
+     catch (error) {
         console.error("Summary API Error:", error);
 
         return NextResponse.json(
