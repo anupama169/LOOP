@@ -82,8 +82,19 @@ try {
         model: "gemini-3.8-flash",
         contents: prompt,
     });
+    console.log("Gemini response:", response);
 
     const aiText = response.text ?? "";
+    console.log("AI Response:");
+console.log(aiText);
+
+console.log("Parsed Sentiment:");
+console.log(
+    aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1]
+);
+    console.log("Gemini response:", response);
+
+    
 
     aiSentiment =
         aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1]?.toLowerCase() ||
