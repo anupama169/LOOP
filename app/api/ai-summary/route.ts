@@ -57,7 +57,7 @@ Focus on:
 
 Do not add information that is not present in the feedback.
 `;
-
+        console.log("Groq Key Exists:", !!process.env.GROQ_API_KEY);
         const completion = await groq.chat.completions.create({
             model: "openai/gpt-oss-20b",
             messages: [
@@ -81,12 +81,24 @@ Do not add information that is not present in the feedback.
             summary,
         });
 
-    } catch (error) {
+    }/* catch (error) {
         console.error(error);
 
         return NextResponse.json(
             { error: "Failed to generate summary" },
             { status: 500 }
         );
-    }
+    }*/
+   } catch (error) {
+    console.error("Summary API Error:", error);
+
+    return NextResponse.json(
+        {
+            error:
+                error instanceof Error
+                    ? error.message
+                    : String(error),
+        },
+        { status: 500 }
+    );
 }
