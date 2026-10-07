@@ -86,7 +86,10 @@ try {
 
     const aiText = response.text ?? "";
     console.log("AI Response:");
+
+console.log("========== AI RESPONSE ==========");
 console.log(aiText);
+console.log("================================");
 
 console.log("Parsed Sentiment:");
 console.log(
