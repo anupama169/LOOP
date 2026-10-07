@@ -81,14 +81,7 @@ Do not add information that is not present in the feedback.
             summary,
         });
 
-    }/* catch (error) {
-        console.error(error);
-
-        return NextResponse.json(
-            { error: "Failed to generate summary" },
-            { status: 500 }
-        );
-    }*/
+    }
     catch (error) {
     console.error("Summary API Error:", error);
 
@@ -101,5 +94,5 @@ Do not add information that is not present in the feedback.
         },
         { status: 500 }
     );
-    }
+    }   
 }

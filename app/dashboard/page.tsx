@@ -140,20 +140,7 @@ useEffect(() => {
 })}
 
           </nav>
-            {/* Logout */}
-<button
-  type="button"
-  onClick={async () => {
-    await fetch("/api/logout", {
-      method: "POST",
-    });
-
-    window.location.href = "/loginpage";
-  }}
-  className="w-full text-left px-4 py-3 mt-10 rounded-lg text-red-300 hover:bg-red-500/10"
->
-  Logout
-</button>
+         
 
           
 
