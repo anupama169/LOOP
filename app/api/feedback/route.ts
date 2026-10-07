@@ -59,17 +59,17 @@ export async function POST(request: Request) {
         }
 
        const prompt = `
-Analyze this customer feedback.
+Analyze the following customer feedback.
 
 Feedback:
 "${content}"
 
-Return the result in exactly this format:
+Return ONLY this format exactly:
 
-Sentiment: positive, neutral, or negative
-Theme: a short name for the main topic
+Sentiment: positive
+Theme: one or two words
 
-Do not add anything else.
+Do not include explanations or markdown.
 `;
 
 let aiSentiment :"positive" | "neutral" | "negative" = "neutral";
@@ -82,21 +82,22 @@ try {
         model: "gemini-3.8-flash",
         contents: prompt,
     });
-    console.log("Gemini response:", response);
+    console.log("Raw Gemini response:");
+console.dir(response, { depth: null });
 
-    const aiText = response.text ?? "";
-    console.log("AI Response:");
+const aiText = response.text ?? "";
 
-console.log("========== AI RESPONSE ==========");
-console.log(aiText);
-console.log("================================");
+console.log("AI Text:",aiText);
+
+
+    
 
 console.log("Parsed Sentiment:");
 console.log(
     aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1]
 );
     
-
+console.log("Extracted Theme:", aiTheme);
     const detectedSentiment =
     aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1];
 
@@ -110,6 +111,7 @@ if (detectedSentiment) {
 
     aiTheme =
         aiText.match(/Theme:\s*(.+)/i)?.[1]?.trim() || "";
+      console.log("Extracted Theme:", aiTheme);  
 } catch (error) {
     console.error("Gemini AI failed:", error);
 
@@ -165,6 +167,7 @@ if (detectedSentiment) {
         });
 
         if (aiTheme) {
+            console.log("Before creating theme:", aiTheme);
             let theme = await prisma.theme.findFirst({
                 where: {
                     name: {
