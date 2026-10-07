@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import FeedbackForm from "./feedbackform";
 import Themeform from "./Themeform";
+import EditFeedback from "./editfeedback";
 import DeleteFeedback from "./DeleteFeedback";
 import { cookies } from "next/headers";
 import AISummary from "./AISummary";
@@ -372,13 +373,34 @@ if (!workspaceUser) {
 
                                     </div>
 
-                                    <div className="mt-5 pt-4 border-t border-gray-800">
+                                    <div className="mt-5 pt-4 border-t border-gray-800 flex gap-3">
+    <EditFeedback
+        id={item.feedback.id}
+        oldContent={item.feedback.content}
+        oldChannel={item.feedback.channel}
+        oldSentiment={item.feedback.sentiment}
+        oldStatus={item.feedback.status}
+    />
+    <EditFeedback
+    id={item.feedback.id}
+    oldContent={item.feedback.content}
+    oldChannel={item.feedback.channel}
+    oldSentiment={item.feedback.sentiment}
+    oldStatus={item.feedback.status}
+/>
 
-                                        <DeleteFeedback
-                                            id={item.feedback.id}
-                                        />
+<EditFeedback
+    id={item.feedback.id}
+    oldContent={item.feedback.content}
+    oldChannel={item.feedback.channel}
+    oldSentiment={item.feedback.sentiment}
+    oldStatus={item.feedback.status}
+/>
 
-                                    </div>
+<DeleteFeedback
+    id={item.feedback.id}
+/>
+    </div>
 
                                 </div>
 
