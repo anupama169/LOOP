@@ -2,11 +2,11 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 
-import { GoogleGenAI } from "@google/genai";
+import Groq from "groq-sdk";
 
 
-const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
+const groq = new Groq({
+    apiKey: process.env.GROQ_API_KEY,
 });
 export async function POST(request: Request) {
     try {
@@ -74,51 +74,49 @@ Do not include explanations or markdown.
 
 let aiSentiment :"positive"|"neutral"|"negative"="neutral";
 let aiTheme = "";
-
 try {
     console.log("Before AI");
 
-    const response = await ai.models.generateContent({
-        model: "gemini-3.8-flash",
-        contents: prompt,
+    const response = await groq.chat.completions.create({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+            {
+                role: "user",
+                content: prompt,
+            },
+        ],
+        temperature: 0,
     });
-    console.log("Raw Gemini response:");
-console.dir(response, { depth: null });
 
-const aiText = response.text ?? "";
+    const aiText =
+        response.choices[0]?.message?.content ?? "";
 
-console.log("AI Text:",aiText);
+    console.log("AI Text:", aiText);
 
-
-    
-
-console.log("Parsed Sentiment:");
-console.log(
-    aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1]
-);
-    
-console.log("Extracted Theme:", aiTheme);
     const detectedSentiment =
-    aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1];
+        aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1];
 
-if (detectedSentiment) {
-    aiSentiment = detectedSentiment.toLowerCase() as
-        | "positive"
-        | "neutral"
-        | "negative";
-}
-
+    if (detectedSentiment) {
+        aiSentiment = detectedSentiment.toLowerCase() as
+            | "positive"
+            | "neutral"
+            | "negative";
+    }
 
     aiTheme =
         aiText.match(/Theme:\s*(.+)/i)?.[1]?.trim() || "";
-      console.log("Extracted Theme:", aiTheme);  
-} catch (error) {
-    console.error("Gemini AI failed:", error);
 
-    // Continue saving the feedback even if AI fails
+    console.log("Sentiment:", aiSentiment);
+    console.log("Theme:", aiTheme);
+
+} catch (error) {
+    console.error("Groq AI failed:", error);
+
     aiSentiment = "neutral";
     aiTheme = "";
 }
+
+
         console.log({
             content,
             channel,
