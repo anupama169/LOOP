@@ -21,7 +21,7 @@ You are an expert sentiment analysis system.
 Analyze this customer feedback.
 
 Feedback:
-"${content}"
+"${body.content}"
 
 Classify the sentiment using these rules:
 
