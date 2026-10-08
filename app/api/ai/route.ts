@@ -15,18 +15,33 @@ export async function POST(request: Request) {
     try {
         const body = await request.json();
 
-        const prompt = `
+       const prompt = `
+You are an expert sentiment analysis system.
+
 Analyze this customer feedback.
 
 Feedback:
-"${body.content}"
+"${content}"
 
-Return the result in exactly this format:
+Classify the sentiment using these rules:
 
-Sentiment: positive, neutral, or negative
-Theme: a short name for the main topic
+- Positive: expresses satisfaction, praise, enjoyment, recommendation, happiness or appreciation.
+- Negative: expresses dissatisfaction, complaints, disappointment, anger or frustration.
+- Neutral: only factual information without any positive or negative opinion.
 
-Do not add anything else.
+Examples:
+
+"I love this product." → positive
+"It is a very interesting movie." → positive
+"The service was excellent." → positive
+"The delivery was late." → negative
+"The app crashes frequently." → negative
+"The meeting is tomorrow." → neutral
+
+Return ONLY this format:
+
+Sentiment: positive
+Theme: one or two words
 `;
 
         const response = await groq.chat.completions.create({
