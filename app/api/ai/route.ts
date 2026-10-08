@@ -1,22 +1,19 @@
 import { NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import Groq from "groq-sdk";
 
-const genAI = new GoogleGenerativeAI(
-    process.env.GEMINI_API_KEY!
-);
+const groq = new Groq({
+    apiKey: process.env.GROQ_API_KEY,
+});
+
 export async function GET() {
     return NextResponse.json({
-        message: "Gemini API route is working",
+        message: "Groq API route is working",
     });
 }
 
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-
-        const model = genAI.getGenerativeModel({
-            model: "gemini-3.8-flash",
-        });
 
         const prompt = `
 Analyze this customer feedback.
@@ -32,10 +29,18 @@ Theme: a short name for the main topic
 Do not add anything else.
 `;
 
-        const result = await model.generateContent(prompt);
+        const response = await groq.chat.completions.create({
+            model: "llama-3.3-70b-versatile",
+            messages: [
+                {
+                    role: "user",
+                    content: prompt,
+                },
+            ],
+            temperature: 0,
+        });
 
-        const response = result.response;
-        const text = response.text();
+        const text = response.choices[0]?.message?.content ?? "";
 
         return NextResponse.json({
             result: text,
@@ -44,7 +49,7 @@ Do not add anything else.
         console.error(error);
 
         return NextResponse.json(
-            { error: "Gemini request failed" },
+            { error: "Groq request failed" },
             { status: 500 }
         );
     }

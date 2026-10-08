@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { GoogleGenAI } from "@google/genai";
+import Groq from "groq-sdk";
 import { prisma } from "@/lib/prisma";
 
-const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
+const groq = new Groq({
+    apiKey: process.env.GROQ_API_KEY,
 });
-
 export async function POST(request: Request) {
     try {
         const body = await request.json();
