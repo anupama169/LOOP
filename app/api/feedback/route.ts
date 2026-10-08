@@ -285,6 +285,11 @@ export async function DELETE(request: Request) {
                 feedbackid: Number(id),
             },
         });
+        await prisma.feedbacktheme.deleteMany({
+    where: {
+        feedbackid: Number(id),
+    },
+});
 
         const feedback = await prisma.feedback.delete({
             where: {
