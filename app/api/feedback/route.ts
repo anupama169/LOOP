@@ -65,13 +65,18 @@ Analyze the following customer feedback.
 Feedback:
 "${content}"
 
-Return ONLY this format exactly:
+Return ONLY two lines:
 
-Sentiment: positive
+Sentiment: positive OR neutral OR negative
 Theme: one or two words
 
-Do not include explanations or markdown.
-`;
+Rules:
+- Love, amazing, excellent, great, pleasant, happy = positive
+- Bad, poor, slow, terrible, hate = negative
+- Only factual information = neutral
+
+No explanations. No markdown.
+;`
 
 let aiSentiment :"positive"|"neutral"|"negative"="neutral";
 let aiTheme = "";
@@ -98,7 +103,8 @@ console.log("========== AI TEXT ==========");
 console.log(aiText);
     
     const detectedSentiment =
-        aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1];
+    aiText.match(/\b(positive|neutral|negative)\b/i)?.[1];
+
 console.log("Detected sentiment:", detectedSentiment);
     if (detectedSentiment) {
         aiSentiment = detectedSentiment.toLowerCase() as
