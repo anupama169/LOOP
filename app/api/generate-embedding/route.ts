@@ -1,10 +1,8 @@
-import { NextResponse } from "next/server";
+/*import { NextResponse } from "next/server";
 import Groq from "groq-sdk";
 import { prisma } from "@/lib/prisma";
 
-const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY,
-});
+
 export async function POST(request: Request) {
     try {
         const body = await request.json();
@@ -27,10 +25,7 @@ export async function POST(request: Request) {
         }
 
         // Generate embedding
-        const response = await ai.models.embedContent({
-            model: "gemini-embedding-001",
-            contents: text,
-        });
+        
 
         const vector = response.embeddings?.[0]?.values;
 
@@ -62,4 +57,11 @@ export async function POST(request: Request) {
             { status: 500 }
         );
     }
+}*/
+import { NextResponse } from "next/server";
+
+export async function POST() {
+    return NextResponse.json({
+        message: "Embedding generation is temporarily disabled.",
+    });
 }

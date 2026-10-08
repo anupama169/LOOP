@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+/*import { NextResponse } from "next/server";
 import  Groq from "groq-sdk";
 import { prisma } from "@/lib/prisma";
 
@@ -121,4 +121,11 @@ export async function POST(request: Request) {
     { status: 500 }
 );
     }
+}*/
+import { NextResponse } from "next/server";
+
+export async function POST() {
+    return NextResponse.json({
+        message: "Semantic search is temporarily disabled.",
+    });
 }
