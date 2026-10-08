@@ -8,6 +8,7 @@ import Groq from "groq-sdk";
 const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY,
 });
+
 export async function POST(request: Request) {
     try {
         const body = await request.json();
@@ -78,7 +79,7 @@ try {
     console.log("Before AI");
 
     const response = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+        model: "openai/gpt-oss-20b",
         messages: [
             {
                 role: "user",
@@ -87,15 +88,18 @@ try {
         ],
         temperature: 0,
     });
+console.log("========== GROQ RESPONSE ==========");
+console.dir(response, { depth: null });
 
-    const aiText =
-        response.choices[0]?.message?.content ?? "";
+const aiText =
+    response.choices[0]?.message?.content ?? "";
 
-    console.log("AI Text:", aiText);
-
+console.log("========== AI TEXT ==========");
+console.log(aiText);
+    
     const detectedSentiment =
         aiText.match(/Sentiment:\s*(positive|neutral|negative)/i)?.[1];
-
+console.log("Detected sentiment:", detectedSentiment);
     if (detectedSentiment) {
         aiSentiment = detectedSentiment.toLowerCase() as
             | "positive"
@@ -106,8 +110,7 @@ try {
     aiTheme =
         aiText.match(/Theme:\s*(.+)/i)?.[1]?.trim() || "";
 
-    console.log("Sentiment:", aiSentiment);
-    console.log("Theme:", aiTheme);
+    console.log("Detected theme:", aiTheme);
 
 } catch (error) {
     console.error("Groq AI failed:", error);
