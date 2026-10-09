@@ -2,6 +2,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
 
 export default function Dashboard() {
   const [activePage, setActivePage] = useState("Dashboard");
@@ -52,6 +61,13 @@ useEffect(() => {
     "Analytics",
     "Settings",
   ];
+  const chartData = [
+  { name: "Users", value: dashboardData.users },
+  { name: "Workspaces", value: dashboardData.workspaces },
+  { name: "Feedback", value: dashboardData.feedback },
+  { name: "Reports", value: dashboardData.reports },
+  { name: "Themes", value: dashboardData.themes },
+];
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -111,6 +127,7 @@ useEffect(() => {
             {menuItems.map((item) => {
 
   const protectedItem = item !== "Dashboard";
+  console.log(chartData);
 
   return (
     <button
@@ -194,7 +211,7 @@ useEffect(() => {
                 </p>
 
                 <h3 className="text-3xl font-bold mt-2">
-                  {loading ? "..." : dashboardData.feedback}
+                  {loading ? "..." : dashboardData.reports}
                 </h3>
 
                 <p className="text-blue-400 text-sm mt-2">
@@ -209,7 +226,7 @@ useEffect(() => {
                 </p>
 
                 <h3 className="text-3xl font-bold mt-2">
-                  {loading ? "..." : dashboardData.reports}
+                  {loading ? "..." : dashboardData.feedback}
                 </h3>
 
                 <p className="text-yellow-400 text-sm mt-2">
@@ -236,33 +253,26 @@ useEffect(() => {
 
 
                 {/* Simple chart */}
-                <div className="mt-8 h-56 flex items-end gap-4">
+               
+ <div className="mt-8 h-72">
+  
+    <div className="mt-8 bg-white rounded-lg p-4">
+  <BarChart
+    width={600}
+    height={300}
+    data={chartData}
+  >
+    <CartesianGrid strokeDasharray="3 3" />
+    <XAxis dataKey="name" />
+    <YAxis />
+    <Tooltip />
+    <Bar dataKey="value" fill="#2563eb" />
+  </BarChart>
+</div>
+  
+</div>
 
-                  {[40, 65, 45, 80, 60, 90, 70].map((height, index) => (
-
-                    <div
-                      key={index}
-                      className="flex-1 bg-blue-600/70 hover:bg-blue-500 rounded-t-lg transition"
-                      style={{ height: `${height}%` }}
-                    />
-
-                  ))}
-
-                </div>
-
-                <div className="flex justify-between text-xs text-gray-500 mt-3">
-                  <span>Mon</span>
-                  <span>Tue</span>
-                  <span>Wed</span>
-                  <span>Thu</span>
-                  <span>Fri</span>
-                  <span>Sat</span>
-                  <span>Sun</span>
-                </div>
-
-              </div>
-
-
+</div>
               {/* Recent Activity */}
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
 

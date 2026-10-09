@@ -17,12 +17,6 @@ model workspace {
   user      workspaceuser[]
 }
 
-enum Role {
-  admin
-  analyst
-  viewer
-}
-
 model user {
   id           Int             @id @default(autoincrement())
   name         String
@@ -40,18 +34,6 @@ model workspaceuser {
   workspace   workspace @relation(fields: [workspaceid], references: [id])
 
   @@id([workspaceid, userid])
-}
-
-enum Sentiment {
-  positive
-  neutral
-  negative
-}
-
-enum Status {
-  new
-  reviewed
-  actioned
 }
 
 model feedback {
@@ -126,4 +108,22 @@ model workspacereport {
   workspace   workspace @relation(fields: [workspaceid], references: [id])
 
   @@id([workspaceid, reportid])
+}
+
+enum Role {
+  admin
+  analyst
+  viewer
+}
+
+enum Sentiment {
+  positive
+  neutral
+  negative
+}
+
+enum Status {
+  new
+  reviewed
+  actioned
 }
